@@ -1,0 +1,16 @@
+- hosts: nodes
+  gather_facts: 'yes'
+  vars_files:
+    - vars/credentials.yml
+  become: true
+  become_method: sudo
+  become_user: root
+  remote_user: ansible
+  tasks:
+    - name: remove users
+      user:
+        name: '{{ item.name }}'
+        remove: true 
+        state: absent
+      no_log: true
+      with_items: '{{ user_details }}'

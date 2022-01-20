@@ -1,0 +1,18 @@
+- hosts: nodes
+  gather_facts: 'yes'
+  vars_files:
+    - vars/credentials.yml
+  become: true
+  become_method: sudo
+  become_user: root
+  remote_user: ansible
+  tasks:
+    - name: add users
+      user:
+        name: '{{ item.name }}'
+        comment: '{{ item.name }}@example.com'
+        password: "{{ item.password | password_hash('sha512') }}"
+        state: present
+        update_password: on_create
+      with_items: '{{ user_details }}'
+      no_log: true
