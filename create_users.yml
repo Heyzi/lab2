@@ -1,3 +1,4 @@
+---
 - hosts: nodes
   vars_files:
     - vars/credentials.yml
