@@ -1,15 +1,15 @@
 ---
 - hosts: nodes
   vars_files:
-    - vars/password.yml
     - vars/userlist.yml
   tasks:
     - name: add users
       user:
-        name: '{{ item }}'
-        comment: '{{ item }}@example.com'
-        password: "{{ password | password_hash('sha512') }}"
+        name: '{{ item.key }}'
+        comment: '{{ item.key }}@example.com'
+        password: "{{ item.value.password | password_hash('sha512') }}"
         state: present
         update_password: on_create
-      with_items:  '{{ users }}'
-#     no_log: true
+      loop: "{{ lookup('dict', users) }}"
+      no_log: true
+

@@ -5,7 +5,7 @@
   tasks:
     - name: remove users
       user:
-        name: '{{ item }}'
+        name: '{{ item.key }}'
         remove: true 
         state: absent
-      with_items: '{{ users }}'
+      loop: "{{ lookup('dict', users) }}"
